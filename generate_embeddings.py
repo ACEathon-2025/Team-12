@@ -1,8 +1,9 @@
 import os
 import sqlite3
-import numpy as np
-import face_recognition
 import pickle
+from deepface import DeepFace
+import numpy as np
+
 
 conn = sqlite3.connect('database/faces.db')
 c = conn.cursor()
@@ -17,26 +18,12 @@ CREATE TABLE IF NOT EXISTS known_faces (
 conn.commit()
 
 def image_to_embedding(image_path):
-    from PIL import Image
-    import numpy as np
-    # Load image with PIL and convert to RGB explicitly
-    pil_image = Image.open(image_path).convert('RGB')
-    
-    # Convert to numpy array with 'uint8' type
-    image = np.asarray(pil_image, dtype=np.uint8)
-    
-    # Confirm image is 3-channel RGB
-    if image.ndim != 3 or image.shape[2] != 3:
-        raise ValueError("Image is not in RGB format")
-    
-    face_locations = face_recognition.face_locations(image)
-    if len(face_locations) == 0:
-        return None
-    embedding = face_recognition.face_encodings(image, known_face_locations=face_locations)[0]
-    return embedding
-
-
-
+    # Use DeepFace to get embeddings
+    embeddings = DeepFace.represent(image_path, model_name='Facenet',enforce_detection=False)
+    if embeddings:
+        # embeddings is a list of dicts with 'embedding' key
+        return embeddings[0]['embedding']
+    return None
 
 known_faces_folder = 'known_faces'
 
