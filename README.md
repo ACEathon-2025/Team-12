@@ -49,38 +49,39 @@ Notification Module (silent log / SMS / call)
 
 **Setup Instructions**
 
-1. **Clone the repository:**  
-git clone https://github.com/yourusername/sentricam.git
-cd sentricam
+1. **Clone the repository:**
+   git clone https://github.com/yourusername/sentricam.git
+   cd sentricam
 
-text
+2. **Install dependencies:**
+   pip install opencv-python face-recognition dlib flask twilio sqlite3
 
-2. **Install dependencies:**  
-pip install opencv-python face-recognition dlib flask twilio sqlite3
+3. **Project folder structure:**
+   /SentriCam
+   ├── app.py
+   ├── setup_database.py
+   ├── add_test_log.py
+   ├── known_faces/
+   ├── database/
+   ├── static/
+   ├── templates/
 
-Optional: firebase-admin pyqt5
-text
+4. **Initialize the database:**
+   python setup_database.py
 
-3. **Project folder structure:**  
-/SentriCam
-├── main.py
-├── known_faces/ # Images of residents, frequent visitors
-├── database/ # Encrypted SQLite DB files
-├── static/ # Static assets and images for UI
-├── templates/ # HTML templates for Flask UI
+5. **Enroll known faces:**
+   - Place 5–10 clear images per person in a subfolder under `/known_faces/` (e.g., `/known_faces/John/`).
 
-text
+6. **Configure Twilio:**
+   - Add your Twilio `account_sid`, `auth_token`, and phone numbers in a `.env` file (do not commit this file).
 
-4. **Enroll known faces:**  
-Add 5–10 clear images per person to `/known_faces/`.
+7. **Run the app:**
+   python app.py
 
-5. **Configure Twilio:**  
-Add your Twilio `account_sid`, `auth_token`, and phone numbers in the project config.
+8. **Test the logs page:**
+   - (Optional) Add a test log with `python add_test_log.py`
+   - Visit `http://127.0.0.1:5000/logs` to see logs.
 
-6. **Run the app:**  
-python main.py
-
-text
 Open `http://127.0.0.1:5000` in a browser to access the UI.
 
 ---
